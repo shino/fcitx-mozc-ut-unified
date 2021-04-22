@@ -76,7 +76,7 @@ prepare() {
 build() {
   cd mozc-${_mozcver}/src
 
-  _targets="server/server.gyp:mozc_server gui/gui.gyp:mozc_tool unix/fcitx/fcitx.gyp:fcitx-mozc unix/fcitx/fcitx.gyp:gen_fcitx_mozc_i18n"
+  _targets="server/server.gyp:mozc_server gui/gui.gyp:mozc_tool unix/fcitx/fcitx.gyp:fcitx-mozc unix/fcitx/fcitx.gyp:gen_fcitx_mozc_i18n unix/emacs/emacs.gyp:mozc_emacs_helper"
 
   GYP_DEFINES="enable_gtk_renderer==0" python build_mozc.py gyp --gypdir=/usr/bin --target_platform=Linux
   python build_mozc.py build -c $_bldtype $_targets
@@ -86,6 +86,8 @@ package() {
   cd mozc-${_mozcver}/src
   install -D -m 755 out_linux/${_bldtype}/mozc_server ${pkgdir}/usr/lib/mozc/mozc_server
   install -m 755 out_linux/${_bldtype}/mozc_tool ${pkgdir}/usr/lib/mozc/mozc_tool
+
+  install -D -m 755 out_linux/${_bldtype}/mozc_emacs_helper ${pkgdir}/usr/bin/mozc_emacs_helper
 
   install -d ${pkgdir}/usr/share/licenses/$pkgname/
   install -m 644 ../LICENSE data/installer/*.html ${pkgdir}/usr/share/licenses/${pkgname}/
